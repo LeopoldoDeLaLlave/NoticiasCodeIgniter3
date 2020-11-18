@@ -15,6 +15,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
     <div class="container">
 
+        <?php $this->load->view('partials/navbar'); ?>
         <br><br>
 
         <table class="table table-hover">

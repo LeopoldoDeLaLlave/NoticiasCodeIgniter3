@@ -6,11 +6,14 @@
     <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
 
-            <?php if ($admin == "1") : ?>
+            <?php if (isset($admin) && $admin == "1") : ?>
                 <li class="nav-item">
                     <a class="nav-link" href="/codeigniter/index.php/tablausuarios">Usuarios</a>
                 </li>
             <?php endif; ?>
+            <li class="nav-item">
+                <a class="nav-link" href="/codeigniter/index.php/noticias">Subir noticia</a>
+            </li>
         </ul>
     </div>
 </nav>

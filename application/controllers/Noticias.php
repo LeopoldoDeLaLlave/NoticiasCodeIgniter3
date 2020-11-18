@@ -19,6 +19,9 @@ class Noticias extends CI_Controller {
     
 
     //Sube una noticia a la base de datos
+    //Está mal porque siempre te reedirige a la página de noticias como
+    //Si fueses administrador
+    
     public function subirNoticia(){
         $titulo = $this->input->post("titulo");
         $cuerpo = $this->input->post("cuerpo");
@@ -26,18 +29,14 @@ class Noticias extends CI_Controller {
         $resultado = $this->noticiasModel->nuevaNoticia($titulo, $cuerpo);
 
         if($resultado){
-            redirect("noticias/correcto");
+            
+            redirect("noticias/mostrarNoticias/1");
         }else{
             $this->index();
         }
     }
 
-    //Nos lleva a una página que nos da un mensaje de correcto
-    public function correcto()
-	{
-        $info["titulo"] = "Correcto";
-		$this->load->view('noticias/correcto', $info);
-    }
+ 
 
     //Muestra todas las noticias que hay en la base de datos
     public function mostrarNoticias($admin)

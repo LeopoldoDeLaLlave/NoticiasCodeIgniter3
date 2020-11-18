@@ -9,7 +9,7 @@ class usuariosModel extends CI_Model
     }
 
 
-    //Sube una noticia a la base de datos
+    //Registra un nuevo usuario
     public function nuevoUsuario($email, $nombre, $apellido, $password)
     {
 
@@ -24,13 +24,13 @@ class usuariosModel extends CI_Model
     public function existeEmail($email)
     {
 
-        $cantidad = $this->db->query("SELECT COUNT(*) FROM usuarios WHERE email LIKE '" . $email . "'");
-        $cantidad = $cantidad->result_array();
+        $cantidad = $this->db->query("SELECT * FROM usuarios WHERE email LIKE '" . $email . "'")->num_Rows();
+        
 
-        if ($cantidad[0] > 0) {
-            return false;
-        } else {
+        if ($cantidad > 0) {
             return true;
+        } else {
+            return false;
         }
     }
 
@@ -41,9 +41,9 @@ class usuariosModel extends CI_Model
 
         $query = $this->db->query('SELECT password FROM usuarios WHERE email LIKE "'.$email.'"')->row()->password;
 
+   
 
-
-        if($query==$password){
+        if(password_verify($password, $query)){
             return true;
         }else{
             return false;

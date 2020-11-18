@@ -14,8 +14,7 @@ class Usuarios extends CI_Controller
     //Carga el formulario para registrar
     public function index()
     {
-        $info["titulo"] = "Registrate";
-        $this->load->view('usuarios/registro', $info);
+        $this->load->view('usuarios/registro');
     }
 
 
@@ -26,11 +25,17 @@ class Usuarios extends CI_Controller
         $nombre = $this->input->post("nombre");
         $apellido = $this->input->post("apellido");
         $password = $this->input->post("password");
+        $password = password_hash($password, PASSWORD_DEFAULT);
 
-
-        $resultado = $this->usuariosModel->nuevoUsuario($email, $nombre, $apellido, $password);
-        if ($resultado) {
-            redirect("usuarios/loadLogin");
+        //Si el email ya está registrado o si no se produce el registro se recarga la página de registro
+        //Si no se redirecciona a la página de login
+        if (!$this->usuariosModel->existeEmail($email)) {
+            $resultado = $this->usuariosModel->nuevoUsuario($email, $nombre, $apellido, $password);
+            if ($resultado) {
+                redirect("usuarios/loadLogin");
+            } else {
+                $this->index();
+            }
         } else {
             $this->index();
         }
@@ -50,7 +55,7 @@ class Usuarios extends CI_Controller
         $info["titulo"] = "Login";
         $this->load->view('usuarios/login', $info);
     }
-    //Sube una noticia a la base de datos
+    //El usuario accede a las noticias
     public function login()
     {
 
@@ -58,15 +63,16 @@ class Usuarios extends CI_Controller
         $password = $this->input->get("password");
 
 
-        
+
+
         $resultado = $this->usuariosModel->login($email, $password);
         if ($resultado) {
-            if($this->usuariosModel->esAdmin($email)){
+            //A través de los parametros de la ruta indicamos si el usuario es administrador o no
+            if ($this->usuariosModel->esAdmin($email)) {
                 redirect("noticias/mostrarNoticias/1");
-            }else{
+            } else {
                 redirect("noticias/mostrarNoticias/0");
             }
-            
         } else {
             $this->loadLogin();
         }
@@ -74,7 +80,7 @@ class Usuarios extends CI_Controller
 
     //Muestra todas las noticias que hay en la base de datos
     public function mostrarUsuarios()
-	{
+    {
         $resultado['usuarios'] = $this->usuariosModel->obtenerUsuarios();
         $this->load->view('usuarios/tablaUsuarios', $resultado);
     }
