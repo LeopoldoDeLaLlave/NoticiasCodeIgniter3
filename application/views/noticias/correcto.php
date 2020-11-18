@@ -1,0 +1,19 @@
+<?php
+defined('BASEPATH') or exit('No direct script access allowed');
+?>
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8">
+    <title>Bienvenido</title>
+</head>
+
+<body>
+
+    <h1><?php echo $titulo; ?></h1>
+
+
+</body>
+
+</html>
